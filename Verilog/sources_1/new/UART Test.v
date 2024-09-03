@@ -53,7 +53,7 @@ module tb_uart_echo ();
     reg uart_clock;
     initial begin
         uart_clock = 0;
-        forever #104167 uart_clock = ~uart_clock;
+        forever #104160 uart_clock = ~uart_clock;
     end
     
     // test bench main routine
@@ -64,15 +64,17 @@ module tb_uart_echo ();
         bit_index = 0;
         #1000;
         for (byte_index=0; byte_index<12; byte_index=byte_index+1) begin
-            RsRx = 0; #104167;  // Start bit 
+            RsRx = 0; #104160;  //; Start bit 
             
             for (bit_index=0; bit_index<8; bit_index=bit_index+1) begin
                 RsRx = sample_string[byte_index][bit_index];
-                #104167;
+                #104160;
             end
-            RsRx = 1; #104167;  // Stop bit
+            RsRx = 1; #104160;  // Stop bit
 //            #200000;
         end
+        #1000;
+        $finish;
     end
 
 endmodule
@@ -236,7 +238,7 @@ module test_uart_echo_string(
                 IDLE: begin
                     send = 0;
                     if(!busy)
-                        next_state  = RX;
+                        next_state = RX;
                 end
                 RX: begin
                     if(valid) begin
